@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 # Constants
 API_VERSION = "1.0.0"
 DATABASE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "database.json")
-DEFAULT_PORT = 5000
+DEFAULT_PORT = 5001
 
 # Initialize Flask app
 app = Flask(__name__)
