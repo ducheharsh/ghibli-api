@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5000:5000"
+      - "5001:5001"
     volumes:
       - ./database.json:/app/database.json
       - ./templates:/app/templates
@@ -14,4 +14,12 @@ services:
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=production
-    restart: unless-stopped 
+      - PYTHONUNBUFFERED=1
+      - GUNICORN_CMD_ARGS="--log-level debug"
+    restart: unless-stopped
+    networks:
+      - ghibli-network
+
+networks:
+  ghibli-network:
+    driver: bridge 

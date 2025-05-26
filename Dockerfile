@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM docker.io/library/python:3.9-slim
 
 WORKDIR /app
 
@@ -17,16 +17,16 @@ RUN mkdir -p static/css static/js static/img templates
 # Copy application files
 COPY app.py .
 COPY database.json .
-COPY index.html templates/
-COPY api.html templates/
-COPY placeholder.html templates/
-COPY style.css static/css/
-COPY main.js static/js/
-COPY logo.png static/img/
-COPY logo.svg static/img/
+COPY templates/ templates/
+COPY static/ static/
+
+# Print directory contents for debugging
+RUN ls -la /app && \
+    ls -la /app/templates && \
+    ls -la /app/static
 
 # Expose the port
-EXPOSE 5000
+EXPOSE 5001
 
-# Run the application
-CMD ["python", "app.py"] 
+# Run the application with gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:5001", "--log-level", "debug", "app:app"] 
