@@ -11,9 +11,19 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Create necessary directories
+RUN mkdir -p static/css static/js static/img templates
+
 # Copy application files
 COPY app.py .
 COPY database.json .
+COPY index.html templates/
+COPY api.html templates/
+COPY placeholder.html templates/
+COPY style.css static/css/
+COPY main.js static/js/
+COPY logo.png static/img/
+COPY logo.svg static/img/
 
 # Expose the port
 EXPOSE 5000

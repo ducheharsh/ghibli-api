@@ -9,6 +9,8 @@ services:
       - "5000:5000"
     volumes:
       - ./database.json:/app/database.json
+      - ./templates:/app/templates
+      - ./static:/app/static
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=production

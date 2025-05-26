@@ -10,7 +10,7 @@ import os
 import json
 import hashlib
 import random
-from flask import Flask, jsonify, request, redirect, abort
+from flask import Flask, jsonify, request, redirect, abort, render_template
 import logging
 
 # Configure logging
@@ -60,21 +60,19 @@ logger.info(f"Loaded database with {len(database['images'])} images")
 
 @app.route('/')
 def index():
-    """API home page with usage information."""
-    return jsonify({
-        "name": "Ghibli Landscapes API",
-        "version": API_VERSION,
-        "description": "API for random Studio Ghibli landscape images",
-        "endpoints": {
-            "/api/random": "Get a random landscape image",
-            "/api/image?id=<id>": "Get a specific image by ID",
-            "/api/image?q=<query>": "Get an image based on query (same query returns same image)",
-            "/api/films": "List all available film codes",
-            "/api/film/<film_code>": "Get a random image from a specific film"
-        },
-        "image_count": len(database["images"]),
-        "film_count": len(database["film_codes"])
-    })
+    """Serve the main page."""
+    random_image = random.choice(database["images"]) if database["images"] else None
+    sample_images = random.sample(database["images"], min(6, len(database["images"]))) if database["images"] else []
+    return render_template('index.html',
+                         image_count=len(database["images"]),
+                         film_codes=database["film_codes"],
+                         random_image=random_image,
+                         sample_images=sample_images)
+
+@app.route('/api')
+def api_docs():
+    """Serve the API documentation page."""
+    return render_template('api.html')
 
 @app.route('/api/random')
 def random_image():
