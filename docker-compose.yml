@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  ghibli-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./database.json:/app/database.json
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=production
+    restart: unless-stopped 

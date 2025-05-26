@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghibli Landscapes API</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Ghibli Landscapes">
+                <h1>Ghibli Landscapes</h1>
+            </div>
+            <ul>
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/api">API Docs</a></li>
+                <li><a href="https://www.ghibli.jp/works/" target="_blank">Official Ghibli</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Studio Ghibli Landscape Images</h1>
+                <p>Explore beautiful landscapes from Studio Ghibli films</p>
+                <p class="stats">{{ image_count }} images from {{ film_codes|length }} films</p>
+                <div class="cta-buttons">
+                    <a href="#random" class="btn primary">Random Landscape</a>
+                    <a href="#search" class="btn secondary">Search Images</a>
+                </div>
+            </div>
+            {% if random_image %}
+            <div class="hero-image" style="background-image: url('{{ random_image.url }}')">
+                <div class="image-info">
+                    <p>From: {{ random_image.film_code }}</p>
+                </div>
+            </div>
+            {% endif %}
+        </section>
+
+        <section id="random" class="random-section">
+            <h2>Random Ghibli Landscape</h2>
+            <p>Click the button to get a random landscape from any Ghibli film</p>
+            
+            <div class="random-container">
+                <div id="random-image-container" class="image-display">
+                    <img id="random-image" src="{{ url_for('static', filename='img/placeholder.png') }}" alt="Random Ghibli Landscape">
+                    <div class="image-info">
+                        <p id="random-image-info">Click to load a random image</p>
+                    </div>
+                </div>
+                <button id="get-random" class="btn primary">Get Random Landscape</button>
+            </div>
+        </section>
+
+        <section id="search" class="search-section">
+            <h2>Search Ghibli Landscapes</h2>
+            <p>Enter any query to get a consistent landscape image (same query always returns the same image)</p>
+            
+            <div class="search-container">
+                <div class="search-form">
+                    <input type="text" id="search-query" placeholder="Enter any search term...">
+                    <button id="search-button" class="btn primary">Search</button>
+                </div>
+                <div id="search-image-container" class="image-display">
+                    <img id="search-image" src="{{ url_for('static', filename='img/placeholder.png') }}" alt="Search Result">
+                    <div class="image-info">
+                        <p id="search-image-info">Enter a query to find an image</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="films" class="films-section">
+            <h2>Explore by Film</h2>
+            <p>Select a film to see a random landscape from that specific Ghibli movie</p>
+            
+            <div class="film-selector">
+                <select id="film-select">
+                    <option value="">Select a film...</option>
+                    {% for film_code in film_codes %}
+                    <option value="{{ film_code }}">{{ film_code }}</option>
+                    {% endfor %}
+                </select>
+                <button id="get-film-image" class="btn primary">Get Film Landscape</button>
+            </div>
+            
+            <div id="film-image-container" class="image-display">
+                <img id="film-image" src="{{ url_for('static', filename='img/placeholder.png') }}" alt="Film Landscape">
+                <div class="image-info">
+                    <p id="film-image-info">Select a film to see a landscape</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="gallery">
+            <h2>Gallery</h2>
+            <p>A sample of beautiful Ghibli landscapes from our collection</p>
+            
+            <div class="gallery-grid">
+                {% for image in sample_images %}
+                <div class="gallery-item">
+                    <img src="{{ image.url }}" alt="Landscape from {{ image.film_code }}">
+                    <div class="image-info">
+                        <p>{{ image.film_code }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>Ghibli Landscapes API</h3>
+                <p>A collection of beautiful landscape images from Studio Ghibli films</p>
+                <p>Images sourced from <a href="https://www.ghibli.jp/works/" target="_blank">www.ghibli.jp</a></p>
+            </div>
+            <div class="footer-links">
+                <h3>Links</h3>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/api">API Documentation</a></li>
+                    <li><a href="https://www.ghibli.jp/" target="_blank">Official Studio Ghibli</a></li>
+                </ul>
+            </div>
+            <div class="footer-api">
+                <h3>API Endpoints</h3>
+                <ul>
+                    <li><a href="/api/random" target="_blank">/api/random</a></li>
+                    <li><a href="/api/films" target="_blank">/api/films</a></li>
+                    <li><a href="/api/redirect/random" target="_blank">/api/redirect/random</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Ghibli Landscapes API. This is a fan project and is not affiliated with Studio Ghibli.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
